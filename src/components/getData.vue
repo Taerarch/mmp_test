@@ -1,8 +1,25 @@
 <template>
-  <div id="getDat">
+  <div id="getData">
     <h1>Get Data</h1>
-    {{ info }}
+    <select v-model="stateSelected">
+      <option v-for="option in info.data['st']" v-bind:value="option" v-bind:key="option.code">
+        {{ option.Code }}
+      </option>
+    </select>
+    <br/>
+    <span>Selected: {{ stateSelected.Name }}</span>
+
+    <select v-model="regionSelected">
+      <option v-if="stateSelected === option.State" v-for="option in info.data['reg']" v-bind:value="option" v-bind:key="option.Name">
+          {{ option.Name }}
+      </option>
+    </select>
+    <br/>
+    <span>Selected: {{ regionSelected.Name }}</span>
+
   </div>
+
+
 </template>
 
 <script>
@@ -12,7 +29,9 @@
     name: 'getData',
     data: function () {
       return {
-        info: null
+        info: '',
+        stateSelected: '',
+        regionSelected: ''
       }
     },
     mounted () {
