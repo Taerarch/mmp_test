@@ -7,15 +7,16 @@
       </option>
     </select>
     <br/>
-    <span>Selected: {{ stateSelected.Name }}</span>
-
+    <span>Selected: {{ stateSelected.Code }}</span>
+    <br/>
     <select v-model="regionSelected">
-      <option v-if="stateSelected === option.State" v-for="option in info.data['reg']" v-bind:value="option" v-bind:key="option.Name">
+      <option v-for="option in info.data['reg'].filter(region => region.State === stateSelected.Code)" v-bind:value="option" v-bind:key="option.Name">
           {{ option.Name }}
       </option>
     </select>
     <br/>
     <span>Selected: {{ regionSelected.Name }}</span>
+    <br/>
 
   </div>
 
