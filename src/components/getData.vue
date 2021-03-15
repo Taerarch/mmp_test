@@ -1,46 +1,41 @@
 <template>
   <div id="getData">
-    <h1>Get Data</h1>
-    <div class="selectForm">
-      <select v-model="stateSelected" >
-        <option v-for="option in info.data['st']" v-bind:value="option" v-bind:key="option.code">
-          {{ option.Code }}
-        </option>
-      </select>
-      <br/>
-      <span>Selected: {{ stateSelected.Code }}</span>
-      <br/>
-    </div>
+    <h1>ATLAS API Get Sydney Accommodation</h1>
+
 
     <div class="selectForm">
-      <select v-model="selectedFilter">
-        <option v-for="option in info.data['reg'].filter(region => region.State === stateSelected.Code)" v-bind:value="option" v-bind:key="option.Name">
+      <h3> Region Filter </h3>
+      <select v-model="regionFilter">
+        <option class="filterBox" v-for="option in info.data['reg'].filter(region => region.State === stateSelected)" v-bind:value="option" v-bind:key="option.Name">
             {{ option.Name }}
         </option>
       </select>
-      <br/>
-      <span>Selected: {{ selectedFilter.Name }}</span>
       <br/>
     </div>
 
 
     <div class="selectForm">
-      <select v-model="selectedFilter">
-        <option v-for="option in info.data['ar'].filter(area => area.StateCode === stateSelected.Code)" v-bind:value="option" v-bind:key="option.Name">
+      <h3> Area Filter </h3>
+      <select v-model="areaFilter">
+        <option class="filterBox" v-for="option in info.data['ar'].filter(area => area.DomesticRegionId === regionFilter.RegionId)" v-bind:value="option" v-bind:key="option.Name">
             {{ option.Name }}
         </option>
       </select>
       <br/>
-      <span>Selected: {{ selectedFilter.Name }}</span>
     </div>
 
     <br/>
+    <!-- <span>Filter: {{ areaFilter.Name }}</span> -->
     <br/>
 
 
     <ul id="results">
-      <li v-for="item in info.data['accomm'].filter(accomm => accomm.addresses.address.region === selectedFilter.Name || accomm.addresses.address.area === selectedFilter.Name)" v-bind:value="item" v-bind:key="item.product_id">
-        {{ item.product_name }}
+      <li v-for="item in info.data['accomm'].filter(accomm => (accomm.addresses.address.region === regionFilter.Name && areaFilter.length === 0) || accomm.addresses.address.area === areaFilter.Name)" v-bind:value="item" v-bind:key="item.product_id">
+        <br/>
+        <h3>{{ item.product_name }}</h3>
+        <p>{{ item.addresses.address.address_line }}</p>
+        <p>{{ item.product_description }}</p>
+        <img :src="item.product_image" />
         <br/>
       </li>
     </ul>
@@ -55,8 +50,9 @@
     data: function () {
       return {
         info: '',
-        stateSelected: '',
-        selectedFilter: ''
+        stateSelected: 'NSW',
+        regionFilter: '',
+        areaFilter: ''
       }
     },
     mounted () {
@@ -69,6 +65,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+h1 {
+  text-align: center;
+  margin: 2em;
+}
 h3 {
   margin: 40px 0 0;
 }
@@ -86,7 +86,9 @@ a {
 .selectForm {
   text-align: center;
 }
-
+.filterBox {
+  min-width: 30%;
+}
 
 
 </style>

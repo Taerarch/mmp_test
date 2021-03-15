@@ -14,10 +14,12 @@
       $API = '123456789101112'; // I know best practice would be to hide this API but I decided it was low priority as I intend on having this project as private.
       $lowInp = strtolower($input);
 
-      $response = $client->request('GET', "https://atlas.atdw-online.com.au/api/atlas/{$lowInp}s?key={$API}{$accomm}");
+
+
+      $response = $client->request('GET', "https://atlas.atdw-online.com.au/api/atlas/{$lowInp}s?key={$API}&st=NSW{$accomm}");
       $output = array();
 
-      // https://atlas.atdw-online.com.au/api/atlas/{$lowInp}s?key=123456789101112&cats=ACCOMM
+      // https://atlas.atdw-online.com.au/api/atlas/{$lowInp}s?key=123456789101112&ct=Sydney&cats=ACCOMM
 
 
       if ($input === 'Product') { //The locations needed to be seperate as they had different structure
@@ -44,17 +46,16 @@
         return $output;
       }
 
-
     }
 
-    $states = get_data('State', '');
+    // $states = get_data('State', '');
     $regions = get_data('Region', '');
     $areas = get_data('Area', '');
     $accomm = get_data('Product', '&cats=ACCOMM');
 
     $export = array();
 
-    $export['st'] = $states;
+    // $export['st'] = $states;
     $export['reg'] = $regions;
     $export['ar'] = $areas;
     $export['accomm'] = $accomm;
