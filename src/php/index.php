@@ -14,12 +14,11 @@
       $API = '123456789101112'; // I know best practice would be to hide this API but I decided it was low priority as I intend on having this project as private.
       $lowInp = strtolower($input);
 
+      $response = $client->request('GET', "https://atlas.atdw-online.com.au/api/atlas/{$lowInp}s?key={$API}&st=NSW{$accomm}&size=5000");
 
-
-      $response = $client->request('GET', "https://atlas.atdw-online.com.au/api/atlas/{$lowInp}s?key={$API}&st=NSW{$accomm}");
       $output = array();
 
-      // https://atlas.atdw-online.com.au/api/atlas/{$lowInp}s?key=123456789101112&ct=Sydney&cats=ACCOMM
+      // https://atlas.atdw-online.com.au/api/atlas/products?key=123456789101112&ct=Sydney&cats=ACCOMM
 
 
       if ($input === 'Product') { //The locations needed to be seperate as they had different structure
@@ -45,13 +44,12 @@
         };
         return $output;
       }
-
     }
 
     // $states = get_data('State', '');
     $regions = get_data('Region', '');
     $areas = get_data('Area', '');
-    $accomm = get_data('Product', '&cats=ACCOMM');
+    $accomm = get_data('Product', '&cats=ACCOMM'); //Just adding the ACCOMM tag on the end of the URI otherwise the other function variables just add an empty string.
 
     $export = array();
 
@@ -60,8 +58,7 @@
     $export['ar'] = $areas;
     $export['accomm'] = $accomm;
 
-    // array_push($export, $states);
-
+    // I'm unsure as to how to do this best, I thought that exporting one object to the then search through would be the easiest on the front end.
 
 
     echo json_encode($export);

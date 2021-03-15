@@ -1,11 +1,12 @@
 <template>
   <div id="getData">
-    <h1>ATLAS API Get Sydney Accommodation</h1>
+    <h1>ATLAS Accommodation</h1>
 
 
     <div class="selectForm">
       <h3> Region Filter </h3>
       <select v-model="regionFilter">
+        <option value="" key="clear"> </option>
         <option class="filterBox" v-for="option in info.data['reg'].filter(region => region.State === stateSelected)" v-bind:value="option" v-bind:key="option.Name">
             {{ option.Name }}
         </option>
@@ -17,6 +18,7 @@
     <div class="selectForm">
       <h3> Area Filter </h3>
       <select v-model="areaFilter">
+        <option value="" key="clear"> </option>
         <option class="filterBox" v-for="option in info.data['ar'].filter(area => area.DomesticRegionId === regionFilter.RegionId)" v-bind:value="option" v-bind:key="option.Name">
             {{ option.Name }}
         </option>
@@ -30,6 +32,7 @@
 
 
     <ul id="results">
+
       <li v-for="item in info.data['accomm'].filter(accomm => (accomm.addresses.address.region === regionFilter.Name && areaFilter.length === 0) || accomm.addresses.address.area === areaFilter.Name)" v-bind:value="item" v-bind:key="item.product_id">
         <br/>
         <h3>{{ item.product_name }}</h3>
@@ -80,14 +83,17 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-a {
-  color: #42b983;
-}
 .selectForm {
   text-align: center;
 }
 .filterBox {
   min-width: 30%;
+}
+#results {
+  padding: 2em;
+}
+#results img {
+  margin-left: 40%
 }
 
 
