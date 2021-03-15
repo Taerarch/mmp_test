@@ -1,26 +1,50 @@
 <template>
   <div id="getData">
     <h1>Get Data</h1>
-    <select v-model="stateSelected">
-      <option v-for="option in info.data['st']" v-bind:value="option" v-bind:key="option.code">
-        {{ option.Code }}
-      </option>
-    </select>
+    <div class="selectForm">
+      <select v-model="stateSelected" >
+        <option v-for="option in info.data['st']" v-bind:value="option" v-bind:key="option.code">
+          {{ option.Code }}
+        </option>
+      </select>
+      <br/>
+      <span>Selected: {{ stateSelected.Code }}</span>
+      <br/>
+    </div>
+
+    <div class="selectForm">
+      <select v-model="selectedFilter">
+        <option v-for="option in info.data['reg'].filter(region => region.State === stateSelected.Code)" v-bind:value="option" v-bind:key="option.Name">
+            {{ option.Name }}
+        </option>
+      </select>
+      <br/>
+      <span>Selected: {{ selectedFilter.Name }}</span>
+      <br/>
+    </div>
+
+
+    <div class="selectForm">
+      <select v-model="selectedFilter">
+        <option v-for="option in info.data['ar'].filter(area => area.StateCode === stateSelected.Code)" v-bind:value="option" v-bind:key="option.Name">
+            {{ option.Name }}
+        </option>
+      </select>
+      <br/>
+      <span>Selected: {{ selectedFilter.Name }}</span>
+    </div>
+
     <br/>
-    <span>Selected: {{ stateSelected.Code }}</span>
-    <br/>
-    <select v-model="regionSelected">
-      <option v-for="option in info.data['reg'].filter(region => region.State === stateSelected.Code)" v-bind:value="option" v-bind:key="option.Name">
-          {{ option.Name }}
-      </option>
-    </select>
-    <br/>
-    <span>Selected: {{ regionSelected.Name }}</span>
     <br/>
 
+
+    <ul id="results">
+      <li v-for="item in info.data['accomm'].filter(accomm => accomm.addresses.address.region === selectedFilter.Name || accomm.addresses.address.area === selectedFilter.Name)" v-bind:value="item" v-bind:key="item.product_id">
+        {{ item.product_name }}
+        <br/>
+      </li>
+    </ul>
   </div>
-
-
 </template>
 
 <script>
@@ -32,7 +56,7 @@
       return {
         info: '',
         stateSelected: '',
-        regionSelected: ''
+        selectedFilter: ''
       }
     },
     mounted () {
@@ -59,4 +83,10 @@ li {
 a {
   color: #42b983;
 }
+.selectForm {
+  text-align: center;
+}
+
+
+
 </style>
